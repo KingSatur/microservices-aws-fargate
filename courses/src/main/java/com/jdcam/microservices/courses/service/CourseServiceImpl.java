@@ -1,5 +1,6 @@
 package com.jdcam.microservices.courses.service;
 
+import com.jdcam.microservices.courses.dto.UserDto;
 import com.jdcam.microservices.courses.entity.Course;
 import com.jdcam.microservices.courses.repository.CourseRepository;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,21 @@ public class CourseServiceImpl implements CourseService{
             courseFromDb.setName(course.getName());
             return Optional.of(this.courseRepository.save(courseFromDb));
         }).orElse(Optional.empty());
+    }
+
+    @Override
+    public Optional<UserDto> assignUser(UserDto userDto, Long id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserDto> createUser(UserDto userDto) {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<UserDto> removeUserFromCourse(Long id, Long courseId) {
+        return Optional.empty();
     }
 
     @Override
