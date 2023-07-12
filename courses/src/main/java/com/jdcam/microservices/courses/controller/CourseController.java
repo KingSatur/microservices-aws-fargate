@@ -1,5 +1,6 @@
 package com.jdcam.microservices.courses.controller;
 
+import com.jdcam.microservices.courses.dto.UserDto;
 import com.jdcam.microservices.courses.entity.Course;
 import com.jdcam.microservices.courses.service.CourseService;
 import org.springframework.http.HttpStatus;
@@ -68,5 +69,32 @@ public class CourseController {
         return this.courseService.update(course, id)
                 .map(userUpdate -> ResponseEntity.ok(userUpdate))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{courseId}/assign/{userId}")
+    public ResponseEntity assignUser(@PathVariable("courseId") Long id, @PathVariable("userId") Long userId){
+        return this.courseService.assignUser(userId, id)
+                .map(userDto1 -> ResponseEntity.status(HttpStatus.CREATED).body(userDto1))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/{courseId}/create-user/")
+    public ResponseEntity createUser(@PathVariable("courseId") Long id, @RequestBody UserDto userDto){
+        return this.courseService.createUser(userDto, id)
+                .map(userDto1 -> ResponseEntity.status(HttpStatus.CREATED).body(userDto1))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{courseId}/remove-user/{userId}")
+    public ResponseEntity createUser(@PathVariable Long courseId, @PathVariable Long userId){
+        return this.courseService.removeUserFromCourse(userId, courseId)
+                .map(userDto1 -> ResponseEntity.status(HttpStatus.CREATED).body(userDto1))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/remove-user/{userId}")
+    public ResponseEntity removeUser(@PathVariable long userId){
+        this.courseService.removeAlumnFromCourse(userId);
+        return ResponseEntity.noContent().build();
     }
 }

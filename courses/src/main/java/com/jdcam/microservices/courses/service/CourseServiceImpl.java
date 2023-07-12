@@ -1,21 +1,26 @@
 package com.jdcam.microservices.courses.service;
 
+import com.jdcam.microservices.courses.client.UserFeignClient;
 import com.jdcam.microservices.courses.dto.UserDto;
 import com.jdcam.microservices.courses.entity.Course;
+import com.jdcam.microservices.courses.entity.CourseUser;
 import com.jdcam.microservices.courses.repository.CourseRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseServiceImpl implements CourseService{
 
     private final CourseRepository courseRepository;
+    private final UserFeignClient userFeignClient;
 
-    public CourseServiceImpl(CourseRepository courseRepository) {
+    public CourseServiceImpl(CourseRepository courseRepository, UserFeignClient userFeignClient) {
         this.courseRepository = courseRepository;
+        this.userFeignClient = userFeignClient;
     }
 
     @Override
@@ -27,7 +32,15 @@ public class CourseServiceImpl implements CourseService{
     @Override
     @Transactional(readOnly = true)
     public Optional<Course> getCourseById(Long id) {
-        return this.courseRepository.findById(id);
+        return this.courseRepository.findById(id).map(course -> {
+            if(course.getCourseUsers().size() > 0){
+                List<Long> alumnsIds = course.getCourseUsers().stream()
+                        .map(courseUser -> courseUser.getUserId()).collect(Collectors.toList());
+                List<UserDto> alumns =  this.userFeignClient.getAlumnsByCourse(alumnsIds);
+                course.setUsers(alumns);
+            }
+            return course;
+        });
     }
 
     @Override
@@ -40,18 +53,42 @@ public class CourseServiceImpl implements CourseService{
     }
 
     @Override
-    public Optional<UserDto> assignUser(UserDto userDto, Long id) {
-        return Optional.empty();
+    @Transactional
+    public Optional<UserDto> assignUser(Long userId, Long id) {
+        return this.courseRepository.findById(id).map(course -> {
+            UserDto userFromService = this.userFeignClient.getUserById(userId);
+            CourseUser courseUser = new CourseUser();
+            courseUser.setUserId(userFromService.getId());
+            course.addCourseUser(courseUser);
+            this.courseRepository.save(course);
+            return Optional.of(userFromService);
+        }).orElse(Optional.empty());
     }
 
     @Override
-    public Optional<UserDto> createUser(UserDto userDto) {
-        return Optional.empty();
+    @Transactional
+    public Optional<UserDto> createUser(UserDto userDto, Long courseId) {
+        return this.courseRepository.findById(courseId).map(course -> {
+            UserDto userCreatedFromService = this.userFeignClient.createUser(userDto);
+            CourseUser courseUser = new CourseUser();
+            courseUser.setUserId(userCreatedFromService.getId());
+            course.addCourseUser(courseUser);
+            this.courseRepository.save(course);
+            return Optional.of(userCreatedFromService);
+        }).orElse(Optional.empty());
     }
 
     @Override
-    public Optional<UserDto> removeUserFromCourse(Long id, Long courseId) {
-        return Optional.empty();
+    @Transactional
+    public Optional<UserDto> removeUserFromCourse(Long userId, Long courseId) {
+        return this.courseRepository.findById(courseId).map(course -> {
+            UserDto userData = this.userFeignClient.getUserById(userId);
+            CourseUser courseUser = new CourseUser();
+            courseUser.setUserId(userData.getId());
+            course.removeCourseUser(courseUser);
+            this.courseRepository.save(course);
+            return Optional.of(userData);
+        }).orElse(Optional.empty());
     }
 
     @Override
@@ -64,5 +101,11 @@ public class CourseServiceImpl implements CourseService{
     @Transactional
     public void delete(Long id) {
         this.courseRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void removeAlumnFromCourse(Long userId){
+        this.courseRepository.deleteAlumnFromCourse(userId);
     }
 }
