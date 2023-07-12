@@ -1,6 +1,7 @@
 package com.jdcam.microservices.users.services;
 
 import com.jdcam.microservices.users.entity.User;
+import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +12,10 @@ public interface UserService {
 
     Optional<User> getUserById(Long id);
 
-    User create(User user);
+    User create(User user) throws AlreadyExistsEmailException;
 
     void delete(Long id);
 
-    Optional<User> update(User user, Long id);
+    Optional<User> update(User user, Long id) throws AlreadyExistsEmailException;
 
 }

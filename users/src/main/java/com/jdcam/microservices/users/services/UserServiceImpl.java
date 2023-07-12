@@ -1,6 +1,7 @@
 package com.jdcam.microservices.users.services;
 
 import com.jdcam.microservices.users.entity.User;
+import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
 import com.jdcam.microservices.users.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,11 @@ public class UserServiceImpl implements UserService{
 
     @Override
     @Transactional
-    public User create(User user) {
+    public User create(User user) throws AlreadyExistsEmailException {
+        Optional<User> userWithEmail = this.userRepository.findByEmail(user.getEmail());
+        if(userWithEmail.isPresent()){
+            throw new AlreadyExistsEmailException("Email already registered");
+        }
         return this.userRepository.save(user);
     }
 
@@ -41,7 +46,11 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public Optional<User> update(User user, Long id) {
+    public Optional<User> update(User user, Long id) throws AlreadyExistsEmailException {
+        Optional<User> userWithEmail = this.userRepository.findByEmail(user.getEmail());
+        if(userWithEmail.isPresent()){
+            throw new AlreadyExistsEmailException("Email already registered");
+        }
         return this.getUserById(id).map(userFromDb -> {
             userFromDb.setEmail(user.getEmail());
             userFromDb.setName(user.getName());
