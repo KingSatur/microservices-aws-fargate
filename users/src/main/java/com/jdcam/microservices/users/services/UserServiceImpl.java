@@ -2,6 +2,7 @@ package com.jdcam.microservices.users.services;
 
 import com.jdcam.microservices.users.entity.User;
 import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
+import com.jdcam.microservices.users.proxy.CourseClient;
 import com.jdcam.microservices.users.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
+    private final CourseClient courseClient;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, CourseClient userClient) {
         this.userRepository = userRepository;
+        this.courseClient = userClient;
     }
 
     @Override
@@ -41,11 +44,14 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         this.userRepository.deleteById(id);
+        this.courseClient.removeUserFromCourse(id);
     }
 
     @Override
+    @Transactional
     public Optional<User> update(User user, Long id) throws AlreadyExistsEmailException {
         Optional<User> userWithEmail = this.userRepository.findByEmail(user.getEmail());
         if(userWithEmail.isPresent()){
@@ -57,4 +63,12 @@ public class UserServiceImpl implements UserService{
             return Optional.of(this.userRepository.save(userFromDb));
         }).orElse(Optional.empty());
     }
+
+    @Override
+    public List<User> getUsersByIds(List<Long> idList) {
+        return (List<User>) this.userRepository.findAllById(idList);
+    }
+
+
+
 }

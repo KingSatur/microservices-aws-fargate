@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +29,8 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public List<User> getUsers(){
-        return this.userService.getUsers();
+    public List<User> getUsers(@RequestParam(value = "ids", required = false) List<Long> ids){
+        return ids != null && ids.size() > 0 ? this.userService.getUsersByIds(ids) : this.userService.getUsers();
     }
 
     @GetMapping("/{id}")
@@ -44,8 +45,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.create(user));
     }
 
-
-
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user,
                                            @PathVariable("id") Long id) throws AlreadyExistsEmailException {
@@ -53,8 +52,6 @@ public class UserController {
                 .map(userUpdate -> ResponseEntity.ok(userUpdate))
                 .orElse(ResponseEntity.notFound().build());
     }
-    
-    
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") long id){
@@ -63,4 +60,5 @@ public class UserController {
             return ResponseEntity.noContent().build();
         }).orElse(ResponseEntity.notFound().build());
     }
+
 }
