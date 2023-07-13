@@ -71,3 +71,10 @@ docker run -p 8002:8002 --env-file .\courses\.env -d --rm --name courses-service
 ```
 docker run -p 8001:8001 --env-file .\users\.env -d --rm --name users-service --network microservices-aws jdlearner/users
 ```
+
+
+# Remove useless images
+
+```
+docker image prune
+```
