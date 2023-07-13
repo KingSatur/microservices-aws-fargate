@@ -16,8 +16,9 @@ RUN gradle bootJar
 FROM openjdk:11-slim as build
 RUN echo "Stage 3, defining entry image entry point"
 USER root
+ARG JAR_PATH=/usr/src/java-code/build/libs
 WORKDIR /usr/src/java-app
-COPY --from=builder /usr/src/java-code/build/libs/*.jar ./app.jar
+COPY --from=builder $JAR_PATH/*.jar ./app.jar
 
 ENV PORT 8002
 EXPOSE $PORT
