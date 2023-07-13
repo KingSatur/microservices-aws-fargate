@@ -14,14 +14,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8001/user/12",
+							"raw": "localhost:8001/user/6",
 							"host": [
 								"localhost"
 							],
 							"port": "8001",
 							"path": [
 								"user",
-								"12"
+								"6"
 							]
 						}
 					},
@@ -33,14 +33,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8001/user/12",
+							"raw": "localhost:8001/user/5",
 							"host": [
 								"localhost"
 							],
 							"port": "8001",
 							"path": [
 								"user",
-								"12"
+								"5"
 							]
 						}
 					},
@@ -52,13 +52,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8001/user",
+							"raw": "localhost:8001/user/",
 							"host": [
 								"localhost"
 							],
 							"port": "8001",
 							"path": [
-								"user"
+								"user",
+								""
 							]
 						}
 					},
@@ -79,14 +80,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8001/user/1",
+							"raw": "localhost:8001/user/10",
 							"host": [
 								"localhost"
 							],
 							"port": "8001",
 							"path": [
 								"user",
-								"1"
+								"10"
 							]
 						}
 					},
@@ -154,6 +155,36 @@
 					"response": []
 				},
 				{
+					"name": "Create user on course",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{$randomEmail}}\",\r\n    \"name\": \"{{$randomFirstName}} {{$randomLastName}}\",\r\n    \"password\": \"{{$randomPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8002/course/2/create-user/",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"course",
+								"2",
+								"create-user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "Get courses",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
@@ -201,14 +232,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course/2",
+							"raw": "localhost:8002/course/5",
 							"host": [
 								"localhost"
 							],
 							"port": "8002",
 							"path": [
 								"course",
-								"2"
+								"5"
 							]
 						}
 					},
@@ -257,14 +288,76 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course/12",
+							"raw": "localhost:8002/course/3",
 							"host": [
 								"localhost"
 							],
 							"port": "8002",
 							"path": [
 								"course",
-								"12"
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Assign user to a course",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/course/5/assign/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"course",
+								"5",
+								"assign",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user from course",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/course/2/remove-user/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"course",
+								"2",
+								"remove-user",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove user from courses",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8002/course/remove-user/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8002",
+							"path": [
+								"course",
+								"remove-user",
+								"1"
 							]
 						}
 					},
