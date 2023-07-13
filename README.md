@@ -54,9 +54,20 @@ docker run -d -p 5490:5432 --name pg --network microservices-aws -e POSTGRES_USE
 # Run services specifying the port dynamically
 
 ```
- docker run -p 8002:8002 -e PORT=8002 -d --rm --name courses-service --network microservices-aws jdlearner/courses
+docker run -p 8002:8002 -e PORT=8002 -d --rm --name courses-service --network microservices-aws jdlearner/courses
 
 ```
 ```
- docker run -p 8001:8001 -e PORT=8001 -d --rm --name users-service --network microservices-aws jdlearner/users
+docker run -p 8001:8001 -e PORT=8001 -d --rm --name users-service --network microservices-aws jdlearner/users
+```
+
+# Run services with .env file
+
+```
+docker run -p 8002:8002 --env-file .\courses\.env -d --rm --name courses-service --network microservices-aws jdlearner/courses
+
+```
+
+```
+docker run -p 8001:8001 --env-file .\users\.env -d --rm --name users-service --network microservices-aws jdlearner/users
 ```
