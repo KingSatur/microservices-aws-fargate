@@ -90,6 +90,16 @@ In detach mode
 ```
 docker-compuse up -d
 ```
+
+Force build
+```
+docker-compose up --build -d
+```
+Only build
+```
+docker-compose build
+```
+
 ```
 docker-compose down
 ```
