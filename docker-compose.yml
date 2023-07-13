@@ -14,6 +14,7 @@ services:
       - ./courses/.env
     networks:
       - microservices-aws
+    restart: always
   users:
     image: jdlearner/users
     container_name: users-service
@@ -25,6 +26,7 @@ services:
       - 8001:8001
     networks:
       - microservices-aws
+    restart: always
   mysql8:
     image: mysql
     restart: always
@@ -55,7 +57,9 @@ services:
 
 volumes:
   data-pg:
+    name: data-pg
   data-mysql: 
+    name: data-mysql
 
 networks:
   microservices-aws:
