@@ -108,3 +108,7 @@ Remove containers and volumes
 ```
 docker-compose down -v
 ```
+
+```
+docker tag [currentImageName] [newImageName]
+```
