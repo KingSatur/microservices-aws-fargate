@@ -78,3 +78,14 @@ docker run -p 8001:8001 --env-file .\users\.env -d --rm --name users-service --n
 ```
 docker image prune
 ```
+
+
+# Run docker-compose
+
+```
+docker-compuse up -d
+```
+
+```
+docker-compose down -v
+```
