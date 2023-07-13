@@ -83,9 +83,18 @@ docker image prune
 # Run docker-compose
 
 ```
-docker-compuse up -d
+docker-compose up
 ```
 
+In detach mode
+```
+docker-compuse up -d
+```
+```
+docker-compose down
+```
+
+Remove containers and volumes
 ```
 docker-compose down -v
 ```
