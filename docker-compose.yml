@@ -4,14 +4,14 @@ version: '3.1'
 services:
 
   courses:
-    image: jdlearner/courses
+    image: davidlearner/courses
     container_name: courses-service
     depends_on:
       - pg
       - users
-    build: 
-      context: ./courses/
-      dockerfile: ./Dockerfile
+    # build: 
+    #   context: ./courses/
+    #   dockerfile: ./Dockerfile
     ports:
       - 8002:8002
     env_file:
@@ -20,13 +20,13 @@ services:
       - microservices-aws
     restart: always
   users:
-    image: jdlearner/users
+    image: davidlearner/users
     container_name: users-service
     depends_on:
       - mysql8
-    build: 
-      context: ./users/
-      dockerfile: ./Dockerfile
+    # build: 
+    #   context: ./users/
+    #   dockerfile: ./Dockerfile
     env_file:
       - ./users/.env
     ports:
