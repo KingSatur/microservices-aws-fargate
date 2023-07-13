@@ -19,6 +19,7 @@ USER root
 WORKDIR /usr/src/java-app
 COPY --from=builder /usr/src/java-code/build/libs/*.jar ./app.jar
 
-EXPOSE 8001
+ENV PORT 8001
+EXPOSE $PORT
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
