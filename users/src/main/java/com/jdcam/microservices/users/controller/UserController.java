@@ -39,27 +39,28 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public List<User> getUsers(@RequestParam(value = "ids", required = false) List<Long> ids){
+    public List<User> getUsers(@RequestParam(value = "ids", required = false) List<Long> ids) {
         return ids != null && ids.size() > 0 ? this.userService.getUsersByIds(ids) : this.userService.getUsers();
     }
 
     @GetMapping("/crash")
-    public void crash(){
-        ((ConfigurableApplicationContext)context).close();
-    }   
+    public void crash() {
+        ((ConfigurableApplicationContext) context).close();
+    }
 
     @GetMapping("/greet")
-    public ResponseEntity greet(){
+    public ResponseEntity greet() {
         Map obj = new HashMap();
         obj.put("data", List.of("null", "null", "hol32232332", "null222", "12",
                 "h21", "123123asd", "123123zxc", "122343", "422"));
         obj.put("podinfo", this.environment.getProperty("MY_POD_NAME"));
         obj.put("podip", this.environment.getProperty("MY_POD_IP"));
+        obj.put("text", this.environment.getProperty("config.text"));
         return ResponseEntity.ok(obj);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id){
+    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
         return this.userService.getUserById(id).map(user -> ResponseEntity.ok(user))
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -72,14 +73,14 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@RequestBody User user,
-                                           @PathVariable("id") Long id) throws AlreadyExistsEmailException {
+            @PathVariable("id") Long id) throws AlreadyExistsEmailException {
         return this.userService.update(user, id)
                 .map(userUpdate -> ResponseEntity.ok(userUpdate))
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUser(@PathVariable("id") long id){
+    public ResponseEntity deleteUser(@PathVariable("id") long id) {
         return this.userService.getUserById(id).map(user -> {
             this.userService.delete(id);
             return ResponseEntity.noContent().build();
