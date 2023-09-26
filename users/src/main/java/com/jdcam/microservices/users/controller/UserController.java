@@ -3,6 +3,8 @@ package com.jdcam.microservices.users.controller;
 import com.jdcam.microservices.users.entity.User;
 import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
 import com.jdcam.microservices.users.services.UserService;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -23,14 +25,26 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final ApplicationContext context;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, ApplicationContext context) {
         this.userService = userService;
+        this.context = context;
     }
 
     @GetMapping("/")
     public List<User> getUsers(@RequestParam(value = "ids", required = false) List<Long> ids){
         return ids != null && ids.size() > 0 ? this.userService.getUsersByIds(ids) : this.userService.getUsers();
+    }
+
+    @GetMapping("/crash")
+    public void crash(){
+        ((ConfigurableApplicationContext)context).close();
+    }   
+
+    @GetMapping("/greet")
+    public List<?> greet(){
+       return List.of("null", "null", "hol32232332", "null222", "12", "h21", "123123asd", "123123zxc", "122343", "422");
     }
 
     @GetMapping("/{id}")

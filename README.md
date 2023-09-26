@@ -109,6 +109,13 @@ Remove containers and volumes
 docker-compose down -v
 ```
 
+# Tag image with different name
 ```
 docker tag [currentImageName] [newImageName]
+```
+
+# Upload image to dockerhub
+
+```
+docker push jdlearner/courses:2.0
 ```
