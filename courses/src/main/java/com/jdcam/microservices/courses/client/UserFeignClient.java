@@ -10,16 +10,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "user-service", url = "${users-feign-url}")
+@FeignClient(name = "user-service")
 public interface UserFeignClient {
 
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     UserDto getUserById(@PathVariable Long id);
 
-
-    @PostMapping("/")
+    @PostMapping("/user")
     UserDto createUser(@RequestBody UserDto userDto);
 
-    @GetMapping
+    @GetMapping("/user")
     List<UserDto> getAlumnsByCourse(@RequestParam Iterable<Long> ids);
 }
