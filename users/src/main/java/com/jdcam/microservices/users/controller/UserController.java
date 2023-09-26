@@ -5,6 +5,7 @@ import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
 import com.jdcam.microservices.users.services.UserService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Validated
@@ -27,9 +30,12 @@ public class UserController {
     private final UserService userService;
     private final ApplicationContext context;
 
-    public UserController(UserService userService, ApplicationContext context) {
+    private final Environment environment;
+
+    public UserController(UserService userService, ApplicationContext context, Environment environment) {
         this.userService = userService;
         this.context = context;
+        this.environment = environment;
     }
 
     @GetMapping("/")
@@ -43,8 +49,13 @@ public class UserController {
     }   
 
     @GetMapping("/greet")
-    public List<?> greet(){
-       return List.of("null", "null", "hol32232332", "null222", "12", "h21", "123123asd", "123123zxc", "122343", "422");
+    public ResponseEntity greet(){
+        Map obj = new HashMap();
+        obj.put("data", List.of("null", "null", "hol32232332", "null222", "12",
+                "h21", "123123asd", "123123zxc", "122343", "422"));
+        obj.put("podinfo", this.environment.getProperty("MY_POD_NAME"));
+        obj.put("podip", this.environment.getProperty("MY_POD_IP"));
+        return ResponseEntity.ok(obj);
     }
 
     @GetMapping("/{id}")
