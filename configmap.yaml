@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-users
+data:
+  DB_USERNAME: root
+  DB_PASSWORD: customPassword
+  COURSES_URL: k8s-courses:8002/course
+  MYSQL_ROOT_PASSWORD: customPassword
+  MYSQL_DATABASE: users
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: k8s-courses
+data:
+  DB_USERNAME: postgres
+  DB_PASSWORD: customPass
+  USERS_URL: k8s-users:8001/user
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: customPass
+  POSTGRES_DB: courses
