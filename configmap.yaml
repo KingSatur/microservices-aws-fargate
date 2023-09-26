@@ -4,6 +4,23 @@ metadata:
   name: user-service
 data:
   DATABASE_NAME: users
+  application.yaml: |-
+    config:
+      text: sample-papi
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: dev
+    config:
+      text: dev-environment
+    ---
+    spring:
+      config:
+        activate:
+          on-profile: uat
+    config:
+      text: uat-environment
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -11,3 +28,6 @@ metadata:
   name: courses-service
 data:
   DATABASE_NAME: courses
+  application.yaml: |-
+    config:
+      text: sample-papi
