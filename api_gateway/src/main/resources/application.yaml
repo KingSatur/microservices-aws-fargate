@@ -1,0 +1,18 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/usuarios/**
+          filters:
+            - RewritePath=/api/usuarios/(?<segment>.*), /user/${segment}
+        - id: courses-service
+          uri: lb://courses-service
+          predicates:
+            - Path=/api/cursos/**
+          filters:
+            - RewritePath=/api/cursos/(?<segment>.*), /course/${segment}
+
+
