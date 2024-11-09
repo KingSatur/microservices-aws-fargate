@@ -5,10 +5,9 @@ metadata:
 spec:
   volumeName: postgres-pv
   accessModes:
-    # - ReadWriteOnce
-    - ReadWriteMany
-  # storageClassName: standard
-  storageClassName: ""
+    - ReadWriteOnce
+    # - ReadWriteMany
+  storageClassName: standard
   resources:
     requests:
       storage: 2Gi

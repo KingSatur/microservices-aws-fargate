@@ -4,9 +4,11 @@ package com.jdcam.microservices.courses.dto;
 public class UserDto {
 
     private Long id;
+
     private String name;
 
     private String password;
+
     private String email;
 
     public String getName() {
