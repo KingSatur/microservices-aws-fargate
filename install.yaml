@@ -1,0 +1,5 @@
+wordpressUsername: admin
+wordpressPassword: admin
+mariadb:
+  auth:
+    rootPassword: secretpassword

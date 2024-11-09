@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: user-service
+  name: users-service
 data:
   DATABASE_NAME: users
   application.yaml: |-
