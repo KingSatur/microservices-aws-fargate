@@ -69,6 +69,4 @@ public class UserServiceImpl implements UserService{
         return (List<User>) this.userRepository.findAllById(idList);
     }
 
-
-
 }
