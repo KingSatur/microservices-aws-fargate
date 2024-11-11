@@ -51,6 +51,9 @@ kubectl apply -f .\pg-pv.yaml `
 # Create courses pods with volumes and expose a service
 kubectl apply -f .\deployment-courses.yaml
 
+# Create api-gateway pods and expose a service
+kubectl apply -f .\deployment-gateway.yaml
+
 # Wait for users-svc to be ready
 Wait-ForService -serviceName "users-svc"
 
@@ -59,7 +62,8 @@ Wait-ForService -serviceName "courses-svc"
 
 # Get URL for users service
 Write-Host "Getting URL for users service and courses service"
-minikube service users-svc courses-svc --url
+# minikube service users-svc courses-svc --url
+minikube service gateway-svc --url
 
 # kubectl delete -f .\deployment-postgresql.yaml `
 #                -f .\pg-pvc.yaml `

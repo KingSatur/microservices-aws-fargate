@@ -2,14 +2,14 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: user-service
-          uri: lb://user-service
+        - id: users-service
+          uri: lb://users-svc
           predicates:
             - Path=/api/usuarios/**
           filters:
             - RewritePath=/api/usuarios/(?<segment>.*), /user/${segment}
         - id: courses-service
-          uri: lb://courses-service
+          uri: lb://courses-svc
           predicates:
             - Path=/api/cursos/**
           filters:
