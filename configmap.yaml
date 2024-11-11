@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: users-service
+  name: users-svc
 data:
   DATABASE_NAME: users
   application.yaml: |-
@@ -25,7 +25,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: courses-service
+  name: courses-svc
 data:
   DATABASE_NAME: courses
   application.yaml: |-

@@ -1,25 +1,3 @@
-# Create secrets
-kubectl apply -f .\secret.yaml
-
-# Create configmaps
-kubectl apply -f .\configmap.yaml
-
-# Create mysql pods with volumes and expose a service
-kubectl apply -f .\mysql-pv.yaml `
-              -f .\mysql-pvc.yaml `
-              -f .\deployment-mysql.yaml
-
-# Create users pods with volumes and expose a service
-kubectl apply -f .\deployment-users.yaml
-
-# Create postgresql pods with volumes and expose a service
-kubectl apply -f .\pg-pv.yaml `
-              -f .\pg-pvc.yaml `
-              -f .\deployment-postgresql.yaml
-
-# Create courses pods with volumes and expose a service
-kubectl apply -f .\deployment-courses.yaml
-
 function Wait-ForService {
     param (
         [string]$serviceName,
@@ -37,6 +15,41 @@ function Wait-ForService {
         Start-Sleep -Seconds 5
     }
 }
+
+# Define the name of the ClusterRoleBinding
+$clusterRoleBindingName = "admin"
+
+# Check if the ClusterRoleBinding already exists
+$exists = kubectl get clusterrolebinding $clusterRoleBindingName -o json | ConvertFrom-Json
+
+if ($exists) {
+    Write-Host "ClusterRoleBinding '$clusterRoleBindingName' already exists."
+} else {
+    Write-Host "Creating ClusterRoleBinding '$clusterRoleBindingName'."
+    kubectl create clusterrolebinding $clusterRoleBindingName --clusterrole=cluster-admin --serviceaccount=default:default
+}
+
+# Create secrets
+kubectl apply -f .\secret.yaml
+
+# Create configmaps
+kubectl apply -f .\configmap.yaml
+
+# Create mysql pod with volumes and expose a service
+kubectl apply -f .\mysql-pv.yaml `
+              -f .\mysql-pvc.yaml `
+              -f .\deployment-mysql.yaml
+
+# Create users pods with volumes and expose a service
+kubectl apply -f .\deployment-users.yaml
+
+# Create postgresql pod with volumes and expose a service
+kubectl apply -f .\pg-pv.yaml `
+              -f .\pg-pvc.yaml `
+              -f .\deployment-postgresql.yaml
+
+# Create courses pods with volumes and expose a service
+kubectl apply -f .\deployment-courses.yaml
 
 # Wait for users-svc to be ready
 Wait-ForService -serviceName "users-svc"

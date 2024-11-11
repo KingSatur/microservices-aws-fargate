@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "courses-service")
+@FeignClient(name = "courses-svc")
 public interface CourseClient {
 
     @DeleteMapping("/course/remove-user/{userId}")
