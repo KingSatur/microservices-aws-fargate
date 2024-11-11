@@ -1,0 +1,19 @@
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://127.0.0.1:9000
+      client:
+        registration:
+          users-svc-client:
+            provider: spring
+            client-id: users-client
+            client-secret: secret
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://127.0.0.1:8001/authorized"
+            scope: read
+            client-name: users-svc-client
+        provider:
+          spring:
+            issuer-ui: http://127.0.0.1:9000

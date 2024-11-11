@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,4 +89,10 @@ public class UserController {
         }).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/authorized")
+    public Map<String, String> authorized(
+            @RequestParam() String code
+    ){
+        return Collections.singletonMap("code", code);
+    }
 }

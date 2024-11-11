@@ -99,7 +99,7 @@ public class SecurityConfig {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:8001/login/oauth2/code/user-svc-client")
+                .redirectUri("http://127.0.0.1:8001/login/oauth2/code/users-svc-client")
                 .redirectUri("http://127.0.0.1:8001/authorizer")
                 .postLogoutRedirectUri("http://127.0.0.1:8080/")
                 .scope(OidcScopes.OPENID)
