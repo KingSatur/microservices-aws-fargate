@@ -4,6 +4,7 @@ import com.jdcam.microservices.users.entity.User;
 import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
 import com.jdcam.microservices.users.proxy.CourseClient;
 import com.jdcam.microservices.users.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +16,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CourseClient courseClient;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, CourseClient userClient) {
+    public UserServiceImpl(UserRepository userRepository, CourseClient userClient,
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.courseClient = userClient;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -40,8 +44,10 @@ public class UserServiceImpl implements UserService {
         if (userWithEmail.isPresent()) {
             throw new AlreadyExistsEmailException("Email already registered");
         }
+        user.setPassword(this.bCryptPasswordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
     }
+
 
     @Override
     @Transactional
@@ -60,6 +66,7 @@ public class UserServiceImpl implements UserService {
         return this.getUserById(id).map(userFromDb -> {
             userFromDb.setEmail(user.getEmail());
             userFromDb.setName(user.getName());
+            userFromDb.setPassword(this.bCryptPasswordEncoder.encode(userFromDb.getPassword()));
             return Optional.of(this.userRepository.save(userFromDb));
         }).orElse(Optional.empty());
     }
@@ -67,6 +74,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsersByIds(List<Long> idList) {
         return (List<User>) this.userRepository.findAllById(idList);
+    }
+
+    @Override
+    public Optional<User> getByEmail(String email) {
+        return this.userRepository.findByEmail(email);
     }
 
 }

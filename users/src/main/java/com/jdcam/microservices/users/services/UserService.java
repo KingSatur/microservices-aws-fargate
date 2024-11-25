@@ -20,4 +20,6 @@ public interface UserService {
 
     List<User> getUsersByIds(List<Long> idList);
 
+    Optional<User> getByEmail(String email);
+
 }

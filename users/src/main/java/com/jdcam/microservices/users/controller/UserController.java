@@ -8,6 +8,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +30,17 @@ import java.util.Map;
 @Validated
 public class UserController {
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
     private final ApplicationContext context;
 
     private final Environment environment;
 
-    public UserController(UserService userService, ApplicationContext context, Environment environment) {
+    public UserController(BCryptPasswordEncoder bCryptPasswordEncoder,
+                          UserService userService,
+                          ApplicationContext context,
+                          Environment environment) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userService = userService;
         this.context = context;
         this.environment = environment;
@@ -94,5 +100,13 @@ public class UserController {
             @RequestParam() String code
     ){
         return Collections.singletonMap("code", code);
+    }
+
+    @GetMapping("/login")
+    public ResponseEntity<?> login(
+            @RequestParam() String email
+    ){
+        return this.userService.getByEmail(email).map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
