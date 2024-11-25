@@ -20,7 +20,7 @@ ARG JAR_PATH=/usr/src/java-code/build/libs
 WORKDIR /usr/src/java-app
 COPY --from=builder $JAR_PATH/*.jar ./app.jar
 
-ENV PORT=8002
+ENV PORT=9000
 EXPOSE $PORT
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

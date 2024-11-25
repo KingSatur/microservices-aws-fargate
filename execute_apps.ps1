@@ -35,6 +35,9 @@ kubectl apply -f .\secret.yaml
 # Create configmaps
 kubectl apply -f .\configmap.yaml
 
+# Crear auth pods and expose a service
+kubectl apply -f .\deployment-auth.yaml
+
 # Create mysql pod with volumes and expose a service
 kubectl apply -f .\mysql-pv.yaml `
               -f .\mysql-pvc.yaml `
@@ -73,5 +76,7 @@ minikube service gateway-svc --url
 #                -f .\mysql-pv.yaml `
 #                -f .\deployment-users.yaml `
 #                -f .\deployment-courses.yaml `
+#                -f .\deployment-gateway.yaml `
+#                -f .\deployment-auth.yaml `
 #                -f .\configmap.yaml `
 #                -f .\secret.yaml

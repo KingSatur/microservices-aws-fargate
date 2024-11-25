@@ -14,6 +14,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/authorized").permitAll()
                 .antMatchers(HttpMethod.GET, "/", "/{id}")
                     .hasAnyAuthority("SCOPE_read", "SCOPE_write")

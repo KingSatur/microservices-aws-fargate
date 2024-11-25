@@ -15,6 +15,7 @@ import com.nimbusds.jose.proc.SecurityContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -42,22 +43,26 @@ import org.springframework.security.web.util.matcher.MediaTypeRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    private final Environment environment;
+
+    public SecurityConfig(Environment environment) {
+        this.environment = environment;
+    }
+
     @Bean
     @Order(1)
     public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http)
             throws Exception {
         OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
-                .oidc(Customizer.withDefaults());	// Enable OpenID Connect 1.0
+                .oidc(Customizer.withDefaults()); // Enable OpenID Connect 1.0
         http
                 // Redirect to the login page when not authenticated from the
                 // authorization endpoint
                 .exceptionHandling((exceptions) -> exceptions
                         .defaultAuthenticationEntryPointFor(
                                 new LoginUrlAuthenticationEntryPoint("/login"),
-                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)
-                        )
-                )
+                                new MediaTypeRequestMatcher(MediaType.TEXT_HTML)))
                 // Accept access tokens for User Info and/or Client Registration
                 .oauth2ResourceServer((resourceServer) -> resourceServer
                         .jwt(Customizer.withDefaults()));
@@ -71,8 +76,7 @@ public class SecurityConfig {
             throws Exception {
         http
                 .authorizeHttpRequests((authorize) -> authorize
-                        .anyRequest().authenticated()
-                )
+                        .anyRequest().authenticated())
                 // Form login handles the redirect to the login page from the
                 // authorization server filter chain
                 .formLogin(Customizer.withDefaults());
@@ -99,9 +103,12 @@ public class SecurityConfig {
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
                 .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .redirectUri("http://127.0.0.1:8001/login/oauth2/code/users-svc-client")
-                .redirectUri("http://127.0.0.1:8001/authorizer")
-                .postLogoutRedirectUri("http://127.0.0.1:8080/")
+                .redirectUri(
+                        this.environment.getProperty("LB_USERS_SVC_URI")
+                                + "/login/oauth2/code/users-svc-client")
+                .redirectUri(
+                        this.environment.getProperty("LB_USERS_SVC_URI")
+                                + "/authorized")
                 .scope(OidcScopes.OPENID)
                 .scope("read")
                 .scope("write")
@@ -130,8 +137,7 @@ public class SecurityConfig {
             KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
             keyPairGenerator.initialize(2048);
             keyPair = keyPairGenerator.generateKeyPair();
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             throw new IllegalStateException(ex);
         }
         return keyPair;

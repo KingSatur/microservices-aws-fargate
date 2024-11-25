@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: auth-service
+    spec:
+      containers:
+        - image: davidlearner/auth-service:latest
+          name: auth
+          ports:
+            - containerPort: 8002
+          env:
+            - name: PORT
+              value: "9000"
+            - name: LB_USERS_SVC_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: users-svc
+                  key: LB_USERS_SVC_URI
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-svc
+spec:
+  ports:
+    - port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: auth-service
+  type: LoadBalancer
