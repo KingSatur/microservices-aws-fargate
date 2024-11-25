@@ -24,7 +24,8 @@ $exists = kubectl get clusterrolebinding $clusterRoleBindingName -o json | Conve
 
 if ($exists) {
     Write-Host "ClusterRoleBinding '$clusterRoleBindingName' already exists."
-} else {
+}
+else {
     Write-Host "Creating ClusterRoleBinding '$clusterRoleBindingName'."
     kubectl create clusterrolebinding $clusterRoleBindingName --clusterrole=cluster-admin --serviceaccount=default:default
 }
