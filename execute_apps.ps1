@@ -41,16 +41,16 @@ kubectl apply -f .\deployment-auth.yaml
 
 # Create mysql pod with volumes and expose a service
 kubectl apply -f .\mysql-pv.yaml `
-              -f .\mysql-pvc.yaml `
-              -f .\deployment-mysql.yaml
+    -f .\mysql-pvc.yaml `
+    -f .\deployment-mysql.yaml
 
 # Create users pods with volumes and expose a service
 kubectl apply -f .\deployment-users.yaml
 
 # Create postgresql pod with volumes and expose a service
 kubectl apply -f .\pg-pv.yaml `
-              -f .\pg-pvc.yaml `
-              -f .\deployment-postgresql.yaml
+    -f .\pg-pvc.yaml `
+    -f .\deployment-postgresql.yaml
 
 # Create courses pods with volumes and expose a service
 kubectl apply -f .\deployment-courses.yaml
