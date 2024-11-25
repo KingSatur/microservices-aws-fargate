@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final CourseClient courseClient;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public User create(User user) throws AlreadyExistsEmailException {
         Optional<User> userWithEmail = this.userRepository.findByEmail(user.getEmail());
-        if(userWithEmail.isPresent()){
+        if (userWithEmail.isPresent()) {
             throw new AlreadyExistsEmailException("Email already registered");
         }
         return this.userRepository.save(user);
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService{
     @Transactional
     public Optional<User> update(User user, Long id) throws AlreadyExistsEmailException {
         Optional<User> userWithEmail = this.userRepository.findByEmail(user.getEmail());
-        if(userWithEmail.isPresent()){
+        if (userWithEmail.isPresent()) {
             throw new AlreadyExistsEmailException("Email already registered");
         }
         return this.getUserById(id).map(userFromDb -> {

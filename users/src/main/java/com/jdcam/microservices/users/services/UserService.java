@@ -2,8 +2,6 @@ package com.jdcam.microservices.users.services;
 
 import com.jdcam.microservices.users.entity.User;
 import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
-import org.bouncycastle.util.Iterable;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +21,3 @@ public interface UserService {
     List<User> getUsersByIds(List<Long> idList);
 
 }
-

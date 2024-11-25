@@ -13,12 +13,12 @@ import java.util.List;
 @FeignClient(name = "users-svc")
 public interface UserFeignClient {
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     UserDto getUserById(@PathVariable Long id);
 
-    @PostMapping("/user")
+    @PostMapping("/")
     UserDto createUser(@RequestBody UserDto userDto);
 
-    @GetMapping("/user")
+    @GetMapping("/")
     List<UserDto> getAlumnsByCourse(@RequestParam Iterable<Long> ids);
 }

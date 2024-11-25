@@ -7,7 +7,7 @@ spring:
           predicates:
             - Path=/api/usuarios/**
           filters:
-            - RewritePath=/api/usuarios/(?<segment>.*), /user/${segment}
+            - RewritePath=/api/usuarios/(?<segment>.*), /${segment}
         - id: courses-service
           uri: lb://courses-svc
           predicates:

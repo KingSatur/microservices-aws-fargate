@@ -17,7 +17,7 @@ public class SecurityConfig {
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/authorized").permitAll()
                 .antMatchers(HttpMethod.GET, "/", "/{id}")
-                    .hasAnyAuthority("SCOPE_read", "SCOPE_write")
+                .hasAnyAuthority("SCOPE_read", "SCOPE_write")
                 .antMatchers(HttpMethod.POST, "/").hasAuthority("SCOPE_write")
                 .antMatchers(HttpMethod.PUT, "/{id}").hasAuthority("SCOPE_write")
                 .antMatchers(HttpMethod.DELETE, "/{id}").hasAuthority("SCOPE_write")
@@ -26,9 +26,9 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .oauth2Login(httpSecurityOAuth2LoginConfigurer ->
-                        httpSecurityOAuth2LoginConfigurer.loginPage("/oauth2/authorization/users-svc-client")
-                ).oauth2Client(Customizer.withDefaults())
+                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
+                        .loginPage("/oauth2/authorization/users-svc-client"))
+                .oauth2Client(Customizer.withDefaults())
                 .oauth2ResourceServer().jwt();
 
         return http.build();

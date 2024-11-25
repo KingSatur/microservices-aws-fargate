@@ -3,7 +3,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://127.0.0.1:9000
+          issuer-uri: ${LB_AUTH_ISSUER_URI}
       client:
         registration:
           users-svc-client:
@@ -11,9 +11,9 @@ spring:
             client-id: users-client
             client-secret: secret
             authorization-grant-type: authorization_code
-            redirect-uri: "http://127.0.0.1:8001/authorized"
-            scope: read
+            redirect-uri: ${LB_USERS_SVC_URI}/authorized
+            scope: write
             client-name: users-svc-client
         provider:
           spring:
-            issuer-ui: http://127.0.0.1:9000
+            issuer-uri: ${LB_AUTH_ISSUER_URI}
