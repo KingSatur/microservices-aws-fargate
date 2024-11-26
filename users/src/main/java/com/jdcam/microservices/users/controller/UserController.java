@@ -3,6 +3,7 @@ package com.jdcam.microservices.users.controller;
 import com.jdcam.microservices.users.entity.User;
 import com.jdcam.microservices.users.exception.AlreadyExistsEmailException;
 import com.jdcam.microservices.users.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
@@ -20,14 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @Validated
+@Slf4j
 public class UserController {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -106,7 +104,12 @@ public class UserController {
     public ResponseEntity<?> login(
             @RequestParam() String email
     ){
-        return this.userService.getByEmail(email).map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Optional<User> user = this.userService.getByEmail(email);
+        if (user.isPresent()){
+            log.info("User exists {}", email);
+            return ResponseEntity.ok(user.get());
+        }
+        log.info("User does not exist {}", email);
+        return ResponseEntity.notFound().build();
     }
 }
