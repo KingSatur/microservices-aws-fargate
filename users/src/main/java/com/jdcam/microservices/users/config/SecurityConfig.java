@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
                         .loginPage("/oauth2/authorization/users-svc-client"))
-                .oauth2Client(Customizer.withDefaults())
+                .csrf().disable()
+                .oauth2Client(Customizer.withDefaults()).csrf().disable()
                 .oauth2ResourceServer().jwt();
 
         return http.build();
