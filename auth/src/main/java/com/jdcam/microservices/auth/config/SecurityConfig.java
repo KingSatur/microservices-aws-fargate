@@ -50,13 +50,13 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
 
     public SecurityConfig(Environment environment,
-                          UserDetailsService userDetailsService) {
+            UserDetailsService userDetailsService) {
         this.environment = environment;
         this.userDetailsService = userDetailsService;
     }
 
     @Bean
-    public static BCryptPasswordEncoder cryptPasswordEncoder(){
+    public static BCryptPasswordEncoder cryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -102,13 +102,11 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient oidcClient = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("users-client")
-//                .clientSecret("{noop}secret")
+                // .clientSecret("{noop}secret")
                 .clientSecret(cryptPasswordEncoder().encode("12345"))
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)

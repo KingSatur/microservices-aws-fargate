@@ -2,11 +2,7 @@ package com.jdcam.microservices.courses.client;
 
 import com.jdcam.microservices.courses.dto.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,11 +10,13 @@ import java.util.List;
 public interface UserFeignClient {
 
     @GetMapping("/{id}")
-    UserDto getUserById(@PathVariable Long id);
+    UserDto getUserById(@PathVariable Long id, @RequestHeader(value = "Authorization", required = true) String token);
 
     @PostMapping("/")
-    UserDto createUser(@RequestBody UserDto userDto);
+    UserDto createUser(@RequestBody UserDto userDto,
+            @RequestHeader(value = "Authorization", required = true) String token);
 
     @GetMapping("/")
-    List<UserDto> getAlumnsByCourse(@RequestParam Iterable<Long> ids);
+    List<UserDto> getAlumnsByCourse(@RequestParam Iterable<Long> ids,
+            @RequestHeader(value = "Authorization", required = true) String token);
 }

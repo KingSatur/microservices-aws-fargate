@@ -10,19 +10,19 @@ public interface CourseService {
 
     List<Course> getCourses();
 
-    Optional<Course> getCourseById(Long id);
+    Optional<Course> getCourseById(Long id, String token);
 
     Course save(Course course);
 
     void delete(Long id);
 
-    Optional<Course> update(Course user, Long id);
+    Optional<Course> update(Course user, Long id, String token);
 
-    Optional<UserDto> assignUser(Long userId, Long id);
+    Optional<UserDto> assignUser(Long userId, Long id, String token);
 
-    Optional<UserDto> createUser(UserDto userDto, Long courseId);
+    Optional<UserDto> createUser(UserDto userDto, Long courseId, String token);
 
-    Optional<UserDto> removeUserFromCourse(Long userId, Long courseId);
+    Optional<UserDto> removeUserFromCourse(Long userId, Long courseId, String token);
 
     void removeAlumnFromCourse(Long userId);
 }

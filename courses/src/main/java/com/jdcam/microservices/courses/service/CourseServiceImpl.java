@@ -31,12 +31,12 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Course> getCourseById(Long id) {
+    public Optional<Course> getCourseById(Long id, String token) {
         return this.courseRepository.findById(id).map(course -> {
             if(course.getCourseUsers().size() > 0){
                 List<Long> alumnsIds = course.getCourseUsers().stream()
                         .map(courseUser -> courseUser.getUserId()).collect(Collectors.toList());
-                List<UserDto> alumns =  this.userFeignClient.getAlumnsByCourse(alumnsIds);
+                List<UserDto> alumns =  this.userFeignClient.getAlumnsByCourse(alumnsIds, token);
                 course.setUsers(alumns);
             }
             return course;
@@ -45,8 +45,8 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Optional<Course> update(Course course, Long id) {
-        return this.getCourseById(id).map(courseFromDb -> {
+    public Optional<Course> update(Course course, Long id, String token) {
+        return this.getCourseById(id, token).map(courseFromDb -> {
             courseFromDb.setName(course.getName());
             return Optional.of(this.courseRepository.save(courseFromDb));
         }).orElse(Optional.empty());
@@ -54,9 +54,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Optional<UserDto> assignUser(Long userId, Long id) {
+    public Optional<UserDto> assignUser(Long userId, Long id, String token) {
         return this.courseRepository.findById(id).map(course -> {
-            UserDto userFromService = this.userFeignClient.getUserById(userId);
+            UserDto userFromService = this.userFeignClient.getUserById(userId, token);
             CourseUser courseUser = new CourseUser();
             courseUser.setUserId(userFromService.getId());
             course.addCourseUser(courseUser);
@@ -67,9 +67,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Optional<UserDto> createUser(UserDto userDto, Long courseId) {
+    public Optional<UserDto> createUser(UserDto userDto, Long courseId, String token) {
         return this.courseRepository.findById(courseId).map(course -> {
-            UserDto userCreatedFromService = this.userFeignClient.createUser(userDto);
+            UserDto userCreatedFromService = this.userFeignClient.createUser(userDto, token);
             CourseUser courseUser = new CourseUser();
             courseUser.setUserId(userCreatedFromService.getId());
             course.addCourseUser(courseUser);
@@ -80,9 +80,9 @@ public class CourseServiceImpl implements CourseService{
 
     @Override
     @Transactional
-    public Optional<UserDto> removeUserFromCourse(Long userId, Long courseId) {
+    public Optional<UserDto> removeUserFromCourse(Long userId, Long courseId, String token) {
         return this.courseRepository.findById(courseId).map(course -> {
-            UserDto userData = this.userFeignClient.getUserById(userId);
+            UserDto userData = this.userFeignClient.getUserById(userId, token);
             CourseUser courseUser = new CourseUser();
             courseUser.setUserId(userData.getId());
             course.removeCourseUser(courseUser);

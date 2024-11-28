@@ -9,7 +9,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,17 +27,13 @@ import java.util.*;
 @Slf4j
 public class UserController {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserService userService;
     private final ApplicationContext context;
-
     private final Environment environment;
 
-    public UserController(BCryptPasswordEncoder bCryptPasswordEncoder,
-                          UserService userService,
+    public UserController(UserService userService,
                           ApplicationContext context,
                           Environment environment) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userService = userService;
         this.context = context;
         this.environment = environment;
@@ -57,8 +52,17 @@ public class UserController {
     @GetMapping("/greet")
     public ResponseEntity greet() {
         Map obj = new HashMap();
-        obj.put("data", List.of("null2222", "null", "hol32232332", "null22223323", "12",
-                "h21", "123123asd", "123123zxc", "122343", "422"));
+        obj.put("data", List.of("null2222",
+                "null",
+                "hol32232332",
+                "null22223323",
+                "12",
+                "h21",
+                "123123asd",
+                "123123zxc",
+                "122343",
+                "422")
+        );
         obj.put("podinfo", this.environment.getProperty("MY_POD_NAME"));
         obj.put("podip", this.environment.getProperty("MY_POD_IP"));
         obj.put("text", this.environment.getProperty("config.text"));

@@ -17,18 +17,19 @@ import java.util.Collections;
 @Slf4j
 public class CustomUserDetailService implements UserDetailsService {
 
-    private final WebClient webClient;
+    private final WebClient.Builder webClient;
 
-    public CustomUserDetailService(WebClient webClient) {
+    public CustomUserDetailService(WebClient.Builder webClient) {
         this.webClient = webClient;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
-            UserDto userDto = this.webClient.get()
+            UserDto userDto = this.webClient.build().get()
                     .uri("http://users-svc:8001/login",
-                            uriBuilder -> uriBuilder.queryParam("email", username).build()).accept(MediaType.APPLICATION_JSON)
+                            uriBuilder -> uriBuilder.queryParam("email", username).build())
+                    .accept(MediaType.APPLICATION_JSON)
                     .retrieve().bodyToMono(UserDto.class).block();
             return new User(userDto.getEmail(), userDto.getPassword(),
                     true,
@@ -37,6 +38,8 @@ public class CustomUserDetailService implements UserDetailsService {
                     true,
                     Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")));
         } catch (RuntimeException exception) {
+            exception.printStackTrace();
+            log.info("Error retrieving user: {}", username);
             throw new UsernameNotFoundException("User not found");
         }
     }
