@@ -1,8 +1,10 @@
 {
 	"info": {
-		"_postman_id": "831b737e-0eaf-4b0b-b20c-7005c97d2455",
+		"_postman_id": "743a5840-c7e6-497f-af2f-b7210cd86f33",
 		"name": "microservices-aws-fargate",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9764662",
+		"_collection_link": "https://universal-star-598646.postman.co/workspace/Apps~90150571-d09f-4ebf-9f25-692cd70d86b4/collection/9764662-743a5840-c7e6-497f-af2f-b7210cd86f33?action=share&source=collection_link&creator=9764662"
 	},
 	"item": [
 		{
@@ -14,14 +16,31 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8001/user/6",
+							"raw": "{{user_service}}/6",
 							"host": [
-								"localhost"
+								"{{user_service}}"
 							],
-							"port": "8001",
 							"path": [
-								"user",
 								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actuator",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_service}}/actuator/health/",
+							"host": [
+								"{{user_service}}"
+							],
+							"path": [
+								"actuator",
+								"health",
+								""
 							]
 						}
 					},
@@ -33,14 +52,12 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8001/user/5",
+							"raw": "{{user_service}}/2",
 							"host": [
-								"localhost"
+								"{{user_service}}"
 							],
-							"port": "8001",
 							"path": [
-								"user",
-								"5"
+								"2"
 							]
 						}
 					},
@@ -48,18 +65,43 @@
 				},
 				{
 					"name": "Get users",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true
+						}
+					},
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8001/user/",
+							"raw": "{{user_service}}/",
 							"host": [
-								"localhost"
+								"{{user_service}}"
 							],
-							"port": "8001",
 							"path": [
-								"user",
 								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Greet",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {
+							"connection": true
+						}
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_service}}/greet",
+							"host": [
+								"{{user_service}}"
+							],
+							"path": [
+								"greet"
 							]
 						}
 					},
@@ -80,13 +122,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8001/user/10",
+							"raw": "{{user_service}}/10",
 							"host": [
-								"localhost"
+								"{{user_service}}"
 							],
-							"port": "8001",
 							"path": [
-								"user",
 								"10"
 							]
 						}
@@ -96,6 +136,16 @@
 				{
 					"name": "Create user",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJraWQiOiI4NjIyMGVhNi0wZGVhLTQ2MzYtOTZhZC0xZTkyYTFkMGNjZDEiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJNYWNrZW56aWUxMEBnbWFpbC5jb20iLCJhdWQiOiJ1c2Vycy1jbGllbnQiLCJuYmYiOjE3MzI1Nzg0MjEsInNjb3BlIjpbIndyaXRlIl0sImlzcyI6Imh0dHA6Ly9ob3N0LmRvY2tlci5pbnRlcm5hbDo1MTAwNSIsImV4cCI6MTczMjU3ODcyMSwiaWF0IjoxNzMyNTc4NDIxLCJqdGkiOiI4Njc4MGRjMC04OTU5LTQxNWItOTRiYy0yMmY1ZDliMzc1NDYifQ.pF6WAPN3OjeWJyL7vXazeNfajIOv8fL47U5-yM2qAtMO5AeJiHHloO57s8hJyLrIH2AK2MYHRv90ueIKYmQG_8Q7yzZfyehEwHfALjNcwLUwAmSYvT8HJ6FF5OvxwoOuiZM0ZXeF3cu7eukBTZwinlv-dKSWhRYQPUSNyGKBXjusKM_tJkIpkrRQBIEMjD-btUX_CYleOQpZKf05MuMvfUjiXa66TYn_GD_WSaNG3u1uQO_rKnIf3H8ZVPK-Io6i3I4yNLz3rJN6-OWfonartlSsGJr5V3wbFc9Oe696L1elgz9ZuZ3VFG0pMkAsXW9QiAiVI1qdx58jXY5Bsq-1_w",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -108,18 +158,48 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8001/user/",
+							"raw": "{{user_service}}/",
 							"host": [
-								"localhost"
+								"{{user_service}}"
 							],
-							"port": "8001",
 							"path": [
-								"user",
 								""
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -141,11 +221,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course/",
+							"raw": "{{course_service}}/course/",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
 								""
@@ -157,6 +236,16 @@
 				{
 					"name": "Create user on course",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -169,11 +258,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course/2/create-user/",
+							"raw": "{{course_service}}/course/2/create-user/",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
 								"2",
@@ -202,11 +290,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course",
+							"raw": "{{course_service}}/course",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course"
 							]
@@ -220,6 +307,16 @@
 						"disableBodyPruning": true
 					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"body": {
@@ -232,14 +329,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course/5",
+							"raw": "{{course_service}}/course/1",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
-								"5"
+								"1"
 							]
 						}
 					},
@@ -248,6 +344,16 @@
 				{
 					"name": "Delete course",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -260,11 +366,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course/1",
+							"raw": "{{course_service}}/course/1",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
 								"1"
@@ -276,6 +381,16 @@
 				{
 					"name": "Update course",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -288,11 +403,10 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8002/course/3",
+							"raw": "{{course_service}}/course/3",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
 								"3"
@@ -304,19 +418,28 @@
 				{
 					"name": "Assign user to a course",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "localhost:8002/course/5/assign/2",
+							"raw": "{{course_service}}/course/1/assign/18",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
-								"5",
+								"1",
 								"assign",
-								"2"
+								"18"
 							]
 						}
 					},
@@ -325,14 +448,23 @@
 				{
 					"name": "Remove user from course",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8002/course/2/remove-user/1",
+							"raw": "{{course_service}}/course/2/remove-user/1",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
 								"2",
@@ -346,18 +478,325 @@
 				{
 					"name": "Remove user from courses",
 					"request": {
-						"method": "DELETE",
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8002/course/remove-user/1",
+							"raw": "{{course_service}}/course/remove-user/1",
 							"host": [
-								"localhost"
+								"{{course_service}}"
 							],
-							"port": "8002",
 							"path": [
 								"course",
 								"remove-user",
 								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "gateway",
+			"item": [
+				{
+					"name": "Get users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway_service}}/api/usuarios/",
+							"host": [
+								"{{api_gateway_service}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get courses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway_service}}/api/cursos/",
+							"host": [
+								"{{api_gateway_service}}"
+							],
+							"path": [
+								"api",
+								"cursos",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Greet",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway_service}}/api/usuarios/greet",
+							"host": [
+								"{{api_gateway_service}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"greet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actuator users readiness probe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway_service}}/api/usuarios/actuator/health/readiness",
+							"host": [
+								"{{api_gateway_service}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"actuator",
+								"health",
+								"readiness"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Actuator users liveness probe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_gateway_service}}/api/usuarios/actuator/health/liveness",
+							"host": [
+								"{{api_gateway_service}}"
+							],
+							"path": [
+								"api",
+								"usuarios",
+								"actuator",
+								"health",
+								"liveness"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "oauth2",
+			"item": [
+				{
+					"name": "Generate authorization_code with form",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{user_service}}/login/oauth2/code/users-svc-client",
+							"host": [
+								"{{user_service}}"
+							],
+							"path": [
+								"login",
+								"oauth2",
+								"code",
+								"users-svc-client"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Generate authorization_code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Assuming the token is in the response body as { \"token\": \"your_token_here\" }\r",
+									"const response = pm.response.json();\r",
+									"const code = response.code;\r",
+									"\r",
+									"// Save the token to an environment variable\r",
+									"pm.environment.set(\"authorization_code\", code);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "sample@mail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{auth_service}}/login",
+							"host": [
+								"{{auth_service}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Exchange authorization_code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Assuming the token is in the response body as { \"token\": \"your_token_here\" }\r",
+									"const response = pm.response.json();\r",
+									"const {access_token} = response;\r",
+									"\r",
+									"// Save the token to an environment variable\r",
+									"pm.environment.set(\"access_token\", access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "12345",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "users-client",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "code",
+									"value": "{{authorization_code}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "{{user_service}}/authorized",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{auth_service}}/oauth2/token",
+							"host": [
+								"{{auth_service}}"
+							],
+							"path": [
+								"oauth2",
+								"token"
 							]
 						}
 					},
