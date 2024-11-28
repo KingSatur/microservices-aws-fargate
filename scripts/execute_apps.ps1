@@ -59,15 +59,16 @@ kubectl apply -f .\deployment-courses.yaml
 kubectl apply -f .\deployment-gateway.yaml
 
 # Wait for users-svc to be ready
-Wait-ForService -serviceName "users-svc"
-
-# Wait for courses-svc to be ready
 Wait-ForService -serviceName "courses-svc"
 
+# Wait-ForService -serviceName "users-svc"
+
+# Wait for courses-svc to be ready
+
 # Get URL for users service
-Write-Host "Getting URL for users service and courses service"
+# Write-Host "Getting URL for users service and courses service"
 # minikube service users-svc courses-svc --url
-minikube service gateway-svc --url
+# minikube service gateway-svc --url
 
 # kubectl delete -f .\deployment-postgresql.yaml `
 #                -f .\pg-pvc.yaml `
