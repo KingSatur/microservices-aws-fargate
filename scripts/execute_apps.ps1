@@ -58,16 +58,49 @@ kubectl apply -f .\deployment-courses.yaml
 # Create api-gateway pods and expose a service
 kubectl apply -f .\deployment-gateway.yaml
 
-# Wait for users-svc to be ready
-Wait-ForService -serviceName "courses-svc"
+$authSvcUrl = minikube service auth-svc --url
+$usersSvcUrl = minikube service users-svc --url
+
+Write-Host "auth-svc URL: $authSvcUrl"
+Write-Host "users-svc URL: $usersSvcUrl"
+
+$configMapPath = ".\configmap.yaml"
+$configMapContent = Get-Content -Path $configMapPath
+$configMapContent = $configMapContent -replace '(?<=LB_AUTH_ISSUER_URI: ).*', $authSvcUrl
+$configMapContent = $configMapContent -replace '(?<=LB_USERS_SVC_URI: ).*', $usersSvcUrl
+
+Set-Content -Path $configMapPath -Value $configMapContent
+
+Write-Host "Updated configmap.yaml with new service URLs."
+
+# Apply the updated configmap
+kubectl apply -f $configMapPath
+
+kubectl rollout restart deployment auth-app-deployment
+
+kubectl rollout restart deployment users-app-deployment
+
+$jsonFilePath = ".\microservices-aws-fargate-local.postman_environment.json"
+$jsonContent = Get-Content -Path $jsonFilePath -Raw | ConvertFrom-Json
+
+# Update the URLs in the JSON content
+foreach ($item in $jsonContent.values) {
+    switch ($item.key) {
+        "user_service" { $item.value = $usersSvcUrl }
+        "auth_service" { $item.value = $authSvcUrl }
+    }
+}
+
+$jsonContent | ConvertTo-Json -Depth 32 | Set-Content -Path $jsonFilePath
+
+Write-Host "Updated microservices-aws-fargate-local.postman_environment.json with new service URLs."
+
+# Wait-ForService -serviceName "courses-svc"
 
 # Wait-ForService -serviceName "users-svc"
 
 # Wait for courses-svc to be ready
 
-# Get URL for users service
-# Write-Host "Getting URL for users service and courses service"
-# minikube service users-svc courses-svc --url
 # minikube service gateway-svc --url
 
 # kubectl delete -f .\deployment-postgresql.yaml `

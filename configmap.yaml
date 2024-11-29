@@ -4,6 +4,8 @@ metadata:
   name: users-svc
 data:
   DATABASE_NAME: users
+  LB_USERS_SVC_URI: http:localhost:8080
+  LB_AUTH_ISSUER_URI: http:localhost:8081
   application.yaml: |-
     config:
       text: sample-papi
